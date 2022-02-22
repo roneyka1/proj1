@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 #from sre_parse import State
+from pathlib import Path
 import util
 
 class SearchProblem:
@@ -94,7 +95,6 @@ def depthFirstSearch(problem):
     #initalizes stack and queue
     s = util.Stack
     q = util.Queue
-    
     start = problem.getStartState()
     if isinstance(DFS_stack, s) or isinstance(DFS_stack, q):
         DFS_stack.push(Node(start))
@@ -109,13 +109,22 @@ def depthFirstSearch(problem):
         else:
             visit.append(n.state)
             
-        if problem.isGoalState(n.start):
-            print("test")
+        if problem.isGoalState(n.state):
+            #print("test")
             return n.path
         for i in problem.getSuccessors(n.state):
-            print(i[0])
-            print(i[1])
-            print(i[2])
+            #successors location i[0]
+            s_loc = i[0]
+            #successors direction i[1]
+            s_dir = i[1]
+            #successors priority i[2]
+            s_pri = i[2]
+            if s_loc not in visit:
+                path_dir = n.path + [s_dir]
+                priority = n.pri + s_pri
+                DFS_stack.push(Node(s_loc, path_dir, priority))
+    return []
+
         
             
 
@@ -143,6 +152,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
+# adds class for Node 
 class Node:
     def __init__(self,state, path = [], pri = 0):
         self.state = state
