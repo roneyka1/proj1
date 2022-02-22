@@ -83,23 +83,27 @@ def depthFirstSearch(problem):
 
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
-
+    "*** YOUR CODE HERE ***"""
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    """
-    "*** YOUR CODE HERE ***"
-    s = util.Stack()
-    q = util.Stack()
+    
+    # Main Structure
+    DFS_stack = util.Stack()
+
+    #initalizes stack and queue
+    s = util.Stack
+    q = util.Queue
+    
     start = problem.getStartState()
-    if isinstance(s, q):
-        s.push(Node(start))
+    if isinstance(DFS_stack, s) or isinstance(DFS_stack, q):
+        DFS_stack.push(Node(start))
     else:
-        s.push(Node(start),0)
+        DFS_stack.push(Node(start),0)
     
     visit = []
-    while not s.isEmpty():
-        n = s.pop()
+    while not DFS_stack.isEmpty():
+        n = DFS_stack.pop()
         if n.state in visit:
             continue
         else:
@@ -108,10 +112,10 @@ def depthFirstSearch(problem):
         if problem.isGoalState(n.start):
             print("test")
             return n.path
-        for s in problem.getSuccessors(n.state):
-            print(s[0])
-            print(s[1])
-            print(s[2])
+        for i in problem.getSuccessors(n.state):
+            print(i[0])
+            print(i[1])
+            print(i[2])
         
             
 
