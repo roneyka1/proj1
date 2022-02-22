@@ -19,6 +19,7 @@ Pacman agents (in searchAgents.py).
 
 #from sre_parse import State
 from pathlib import Path
+from tkinter import INSERT
 import util
 
 class SearchProblem:
@@ -85,25 +86,26 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     "*** YOUR CODE HERE ***"""
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+   # print("Start:", problem.getStartState())
+   # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+   # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     
-    # Main Structure
-    DFS_stack = util.Stack()
+    #initalizers
 
-    #initalizes stack and queue
+    # Main Structure
+    fridge = util.Stack()
+
     s = util.Stack
     q = util.Queue
-    start = problem.getStartState()
-    if isinstance(DFS_stack, s) or isinstance(DFS_stack, q):
-        DFS_stack.push(Node(start))
-    else:
-        DFS_stack.push(Node(start),0)
-    
     visit = []
-    while not DFS_stack.isEmpty():
-        n = DFS_stack.pop()
+    
+
+    start = problem.getStartState()
+    fridge.push(Node(start))
+    
+   
+    while not fridge.isEmpty():
+        n = fridge.pop()
         if n.state in visit:
             continue
         else:
@@ -122,7 +124,7 @@ def depthFirstSearch(problem):
             if s_loc not in visit:
                 path_dir = n.path + [s_dir]
                 priority = n.pri + s_pri
-                DFS_stack.push(Node(s_loc, path_dir, priority))
+                fridge.push(Node(s_loc, path_dir, priority))
     return []
 
         
@@ -132,12 +134,89 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
+    #print("Start:", problem.getStartState())
+   # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+   # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+
     "*** YOUR CODE HERE ***"
+
+    
+    # Main Structure 
+    fridge = util.Queue()
+
+    #initalizers
+    s = util.Stack
+    q = util.Queue
+    visit = []
+    
+    start = problem.getStartState()
+    fridge.push(Node(start))
+    
+    while not fridge.isEmpty():
+        n = fridge.pop()
+        if n.state in visit:
+            continue
+        else:
+            visit.append(n.state)
+            
+        if problem.isGoalState(n.state):
+            return n.path
+        for i in problem.getSuccessors(n.state):
+            #successors location i[0]
+            s_loc = i[0]
+            #successors direction i[1]
+            s_dir = i[1]
+            #successors priority i[2]
+            s_pri = i[2]
+            if s_loc not in visit:
+                path_dir = n.path + [s_dir]
+                priority = n.pri + s_pri
+                fridge.push(Node(s_loc, path_dir, priority))
+    return []
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    #implement heuristics 
+        
+    # Main Structure 
+    fridge = util.PriorityQueue()
+
+    #initalizers
+    s = util.Stack
+    q = util.Queue
+    visit = []
+   # heuristic = nullHeuristic
+    
+    start = problem.getStartState()
+    fridge.push(Node(start),nullHeuristic(start))
+    
+    while not fridge.isEmpty():
+        n = fridge.pop()
+        if n.state in visit:
+            continue
+        else:
+            visit.append(n.state)
+            
+        if problem.isGoalState(n.state):
+            return n.path
+        for i in problem.getSuccessors(n.state):
+            #successors location i[0]
+            s_loc = i[0]
+            #successors direction i[1]
+            s_dir = i[1]
+            #successors priority i[2]
+            s_pri = i[2]
+            if s_loc not in visit:
+                #define values
+                path_dir = n.path + [s_dir]
+                priority = n.pri + s_pri
+              #  h = n.pri + nullHeuristic(s_loc, problem)
+                # def push(self, item, priority):
+                fridge.push(Node(s_loc, path_dir, priority), priority)
+
+    return []
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -150,6 +229,44 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+       # Main Structure 
+    """fridge = util.PriorityQueue()
+
+    #initalizers
+    s = util.Stack
+    q = util.Queue
+    visit = []
+   # heuristic = nullHeuristic
+    
+    start = problem.getStartState()
+    fridge.push(Node(start),nullHeuristic())
+    
+    while not fridge.isEmpty():
+        n = fridge.pop()
+        if n.state in visit:
+            continue
+        else:
+            visit.append(n.state)
+            
+        if problem.isGoalState(n.state):
+            return n.path
+        for i in problem.getSuccessors(n.state):
+            #successors location i[0]
+            s_loc = i[0]
+            #successors direction i[1]
+            s_dir = i[1]
+            #successors priority i[2]
+            s_pri = i[2]
+            if s_loc not in visit:
+                #define values
+                path_dir = n.path + [s_dir]
+                priority = n.pri + s_pri
+                h = priority + heuristic(s_loc, problem)
+                fridge.push(Node(s_loc, path_dir, priority), h)             
+
+    return []"""
     util.raiseNotDefined()
 
 # adds class for Node 
