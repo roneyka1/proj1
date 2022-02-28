@@ -288,6 +288,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.startingCornerState = CornerState(self.startingPosition)
 
     def getStartState(self):
         """
@@ -295,6 +296,7 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        self.startingCornerState
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -540,3 +542,12 @@ def mazeDistance(point1, point2, gameState):
     assert not walls[x2][y2], 'point2 is a wall: ' + str(point2)
     prob = PositionSearchProblem(gameState, start=point1, goal=point2, warn=False, visualize=False)
     return len(search.bfs(prob))
+
+
+class CornerState:
+    def __init__(self, pac_pos, visited = [False, False, False, False]):
+        self.pac_pos = pac_pos
+        self.visited = [i for i in visited]
+
+    def __cmp__(self, other):
+        return cmp((self.pac_pos, self.visited), (other.pac_pos, other.visited))

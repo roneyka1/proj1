@@ -232,7 +232,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
        # Main Structure 
-    """fridge = util.PriorityQueue()
+    fridge = util.PriorityQueue()
 
     #initalizers
     s = util.Stack
@@ -266,7 +266,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 h = priority + heuristic(s_loc, problem)
                 fridge.push(Node(s_loc, path_dir, priority), h)             
 
-    return []"""
+    return []
     util.raiseNotDefined()
 
 # adds class for Node 
