@@ -523,8 +523,20 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        x, y = startPosition
+        path = []
 
-        x , y = startPosition
+        for idx, fx in enumerate(food):
+            for idy, fy in enumerate(fx):
+                if food[idx][idy]:
+                    md = mazeDistance((x,y), (idx,idy), gameState)
+                    if md < mind:
+                        mfx = idx
+                        mfy = idy
+                        mind = md
+
+        prob = PositionSearchProblem(gameState, start=(x,y),goal=(mfx,mfy), warn = False, visualize=False)
+        return search.bfs(prob)
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -561,6 +573,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+
+        return self.food[x][y]
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
