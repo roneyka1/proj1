@@ -241,7 +241,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
    # heuristic = nullHeuristic
     
     start = problem.getStartState()
-    fridge.push(Node(start),nullHeuristic())
+    fridge.push(Node(start),nullHeuristic(start))
     
     while not fridge.isEmpty():
         n = fridge.pop()
