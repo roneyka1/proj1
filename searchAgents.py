@@ -299,7 +299,8 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        return (self.startingPosition, self.corners)
+        start_state = (self.startingPosition, self.corners)
+        return start_state
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -339,7 +340,7 @@ class CornersProblem(search.SearchProblem):
             nextx, nexty = int(x + dx), int(y + dy)
 
             hitsWall = self.walls[nextx][nexty]
-            if not hitsWall:
+            if hitsWall == False:
                 corners = tuple(x for x in state[1] if x != (nextx, nexty))
                 successors.append((((nextx, nexty), corners), action, 1))
             "*** YOUR CODE HERE ***"
@@ -351,8 +352,6 @@ class CornersProblem(search.SearchProblem):
         Returns the cost of a particular sequence of actions.  If those actions
         include an illegal move, return 999999.  This is implemented for you.
         """
-        if actions == None: 
-            return 999999
         x,y= self.startingPosition
         for action in actions:
             dx, dy = Actions.directionToVector(action)
@@ -379,21 +378,17 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    
-    xlen = corners[3][0]
-    ylen = corners[3][1]
 
     if len(state[1]) == 0:
         return 0
+    else:
+        val = []
 
-    val = []
+        for s in state[1]:
+            val.append( abs(s[0] - state[0][0]) + abs( s[1] - state[0][1] ) )
 
-    for s in state[1]:
-        val.append( abs(s[0] - state[0][0]) + abs( s[1] - state[0][1] ) )
+        return max(val)
 
-    return max(val)
-
-    return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -447,7 +442,7 @@ class FoodSearchProblem:
             dx, dy = Actions.directionToVector(action)
             x, y = int(x + dx), int(y + dy)
             if self.walls[x][y]:
-                return 999999
+                return 9999
             cost += 1
         return cost
 
@@ -523,20 +518,14 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        x, y = startPosition
-        path = []
-
-        for idx, fx in enumerate(food):
-            for idy, fy in enumerate(fx):
-                if food[idx][idy]:
-                    md = mazeDistance((x,y), (idx,idy), gameState)
-                    if md < mind:
-                        mfx = idx
-                        mfy = idy
-                        mind = md
-
-        prob = PositionSearchProblem(gameState, start=(x,y),goal=(mfx,mfy), warn = False, visualize=False)
-        return search.bfs(prob)
+        cost = 99999999
+        for i in range(food.width):
+            for j in range(food.height):
+                if food[i][j]:
+                    path = search.bfs(problem)
+                    if len(path)<cost:
+                        cost = len(path)
+        return path
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
